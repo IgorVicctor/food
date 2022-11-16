@@ -5,7 +5,7 @@ import OrderItem from "./OrderItem";
 import firebase from "../../firebase";
 import LottieView from "lottie-react-native";
 
-export default function ViewCart({ navigation }) {
+export default function ViewCart({ navigation, idUser }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -14,7 +14,7 @@ export default function ViewCart({ navigation }) {
     );
 
     const total = items
-        .map((item) => Number(item.price.replace("$", "")))
+        .map((item) => Number(item.price.replace("R$", "")))
         .reduce((prev, curr) => prev + curr, 0);
 
     const totalUSD = total.toLocaleString("en", {
@@ -22,11 +22,35 @@ export default function ViewCart({ navigation }) {
         currency: "USD",
     });
 
+      const addOrder = () => {
+        setLoading(true);
+        items.map((item) => {
+                fetch('https://food-apifepi.herokuapp.com/pedido/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },  
+                    body: JSON.stringify({
+                        subid: idUser,
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image
+                    })
+                }).then(() => {
+                    setTimeout(() => {
+                        setLoading(false);
+                        navigation.navigate("OrderCompleted", {idUser: idUser});
+                    }, 1000);
+                });  
+            })      
+        };
+
     const addOrderToFireBase = () => {
         setLoading(true);
         const db = firebase.firestore();
-        db.collection("orders")
-          .add({
+        db.collection("Pedidos").doc(idUser)
+          .set({
             items: items,
             restaurantName: restaurantName,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -34,46 +58,9 @@ export default function ViewCart({ navigation }) {
             setTimeout(() => {
                 setLoading(false);
                 navigation.navigate("OrderCompleted");
-            }, 2000);
+            }, 1000);
           });
       };
-
-
-    const styles = StyleSheet.create({
-        modalContainer: {
-            flex: 1,
-            justifyContent: "flex-end", 
-            backgroundColor: "rgba(0,0,0,0.7)"
-        },
-
-        modalCheckoutContainer: {
-            backgroundColor: "white",
-            padding: 16,
-            height: 450,
-            borderWitdh: 1
-        },
-
-        restaurantName: {
-            textAlign: "center",
-            fontWeight: "600",
-            fontSize: 18,
-            marginBottom: 10
-        },
-
-        subTotalContainer: {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 15
-        },
-
-        subTotalText: {
-            textAlign: "left",
-            fontWeight: "600",
-            fontSize: 15,
-            marginBottom: 10
-        },
-    })
-
     
     const checkoutModalContent = () => {
         return (
@@ -85,8 +72,8 @@ export default function ViewCart({ navigation }) {
                         <OrderItem key={index} item={item} />
                     ))}
                     <View style={styles.subTotalContainer}>
-                        <Text style={styles.subTotalText}>Subtotal</Text>
-                        <Text>${totalUSD}</Text>
+                        <Text style={styles.subTotalText}>Total</Text>
+                        <Text>R${totalUSD}</Text>
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "center" }}>
                         <TouchableOpacity style={{
@@ -99,11 +86,12 @@ export default function ViewCart({ navigation }) {
                             position: "relative" 
                         }}
                         onPress={() => {
-                            addOrderToFireBase();
+                            addOrder();
+                            // addOrderToFireBase();
                             setModalVisible(false);
                         }}
                         >
-                            <Text style={{ color: "white", fontSize: 20 }}>Checkout</Text>
+                            <Text style={{ color: "white", fontSize: 20 }}>Finalizar</Text>
                             <Text 
                                 style={{ 
                                     position: "absolute",
@@ -113,7 +101,7 @@ export default function ViewCart({ navigation }) {
                                     top: 16 
                                 }}
                             >
-                                ${total ? totalUSD : ""}
+                                R${total ? totalUSD : ""}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -164,10 +152,10 @@ export default function ViewCart({ navigation }) {
                         }}
                         onPress={() => setModalVisible(true)}
                     >
-                        <Text style={{ color: "white", fontSize: 20, marginRight: 40 }}>
-                            View Cart
+                        <Text style={{ color: "white", fontSize: 20, marginRight: 25 }}>
+                            Ver carrinho
                         </Text>
-                        <Text style={{ color: "white", fontSize: 20 }}>${totalUSD}</Text>
+                        <Text style={{ color: "white", fontSize: 20 }}>R${totalUSD}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -195,3 +183,38 @@ export default function ViewCart({ navigation }) {
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    modalContainer: {
+        flex: 1,
+        justifyContent: "flex-end", 
+        backgroundColor: "rgba(0,0,0,0.7)"
+    },
+
+    modalCheckoutContainer: {
+        backgroundColor: "white",
+        padding: 16,
+        height: 450,
+        borderWitdh: 1
+    },
+
+    restaurantName: {
+        textAlign: "center",
+        fontWeight: "600",
+        fontSize: 18,
+        marginBottom: 10
+    },
+
+    subTotalContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 15
+    },
+
+    subTotalText: {
+        textAlign: "left",
+        fontWeight: "600",
+        fontSize: 15,
+        marginBottom: 10
+    },
+})

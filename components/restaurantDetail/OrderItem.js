@@ -7,12 +7,13 @@ export default function OrderItem({item}){
         <View style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            padding: 20,
-            borderBottomWidth: 1,
+            // paddingTop: 20,
+            paddingVertical: 20,
+            borderBottomWidth: 2,
             borderBottomColor: "#999"
         }}>
-            <Text style={{ fontWeight: "600", fontSize: 16}}>{title}</Text>
-            <Text style={{ opacity: 0.7, fontSize: 16}}>{price}</Text>
+            <Text style={{ fontWeight: "600", fontSize: 18}}>{title}</Text>
+            <Text style={{ opacity: 0.7, fontSize: 18}}>{price}</Text>
         </View>
     );
 }

@@ -3,19 +3,19 @@ import { View, Text, Image } from 'react-native';
 
 export default function About(props) {
     
-    const { name, image, price, reviews, rating, categories } =
+    const { id, nome, imagem, preco, revisao, avaliacao, categoria } =
         props.route.params;
 
-    const formatterdCategories = categories.map((cat) => cat.title).join( " • ");
+    // const formatterdcategoria = categoria.map((cat) => cat.title).join( " • ");
 
-    const description = `${formatterdCategories} ${
-        price ? " • " + price : ""
-        } • 🎫 • ${rating} ⭐ (${reviews}+)`;
+    const description = `${categoria} ${
+        preco ? " • " + preco : ""
+        } • 🎫 • ${avaliacao} ⭐ (${revisao}+)`;
 
     return (
         <View>
-            <RestaurantImage image={image} />
-            <RestaurantName title={name} />
+            <RestaurantImage image={imagem} />
+            <RestaurantName title={nome} />
             <RestaurantDescription description={description} />
         </View>
     );

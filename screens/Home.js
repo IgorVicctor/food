@@ -3,54 +3,57 @@ import { View, Text, SafeAreaView, StyleSheet, StatusBar, ScrollView } from "rea
 // import { Divider } from "react-native-elements";
 import BottomTabs from "../components/home/BottomTabs";
 import Categories from "../components/home/Categories";
-import HeaderTabs from "../components/home/HeaderTabs"
+import HeaderTabs from "../components/home/HeaderCarrinho"
 import RestaurantItems, { localRestaurants } from "../components/home/RestaurantItems";
 import SearchBar from "../components/home/SearchBar"
+import firebase from "../firebase"
 
-const YELP_API_KEY = 
-    "Dn8ugnfmmBDvl03qWucyl7m0XEPGtnGR14y0QRGn66obYCMc_kwVHAAGrUVXsD_aznnLO92S-7h8LYQcYknNfIupIZlL1Fo1Qntd9doXBr8XZrdBIDtNfG6e_UY7Y3Yx";
+export default function Home({ navigation, route }) {
+    const database = firebase.firestore()  
+    
+    const[list, setList] = useState([])
+    const[dados, setDados] = useState([])
 
-export default function Home({ navigation }) {
-    const [restaurantData, setRestaurantData] = useState(localRestaurants);
-    const [city, setCity] = useState("San Francisco");
-    const [activeTab, setActiveTab] = useState("Delivery");
-
-    const getRestaurantsFromYelp = () => {
-        const yelpUrl =
-            `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
-   
-    const apiOptions = {
-        headers: {
-            Authorization: `Bearer ${YELP_API_KEY}`,
-        }}
-
-        return fetch(yelpUrl, apiOptions)
-        .then((res) => res.json())
-        .then(json => 
-            setRestaurantData(
-                json.businesses.filter((business) => 
-                    business.transactions.includes(activeTab.toLowerCase())
-                )
-            )
-        );
-    };
+    const { idUser } = route.params;
 
     useEffect(() => {
-        getRestaurantsFromYelp();
-    }, [city, activeTab]);
+        fetch('https://food-apifepi.herokuapp.com/menu/', {
+          method: 'GET',
+          headers: {
+            'Accept':'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          setList(data)
+        })
+      }, [])
+
+      useEffect(() => {
+        database.collection("Restaurantes").onSnapshot((query) => {
+          const list1 = [];
+          query.forEach((doc) => {
+            list1.push({ ...doc.data(), id: doc.id });
+          }); 
+          setDados(list1);
+          console.log(list1)
+        });
+      }, [])
 
     return (
         <SafeAreaView style={styles.AndroidSafeArea}>
             <View style={{backgroundColor: "white", padding: 15}}>
-                <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab}/>
-                <SearchBar cityHandler={setCity}/>
+                {/* <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab}/> */}
+                {/* <SearchBar cityHandler={setCity}/> */}
+                <SearchBar/>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Categories />
-                <RestaurantItems restaurantData={restaurantData} navigation={navigation}/>
+                <RestaurantItems idUser={idUser} restaurantData={list} navigation={navigation}/>
+                {/* <RestaurantItems idUser={idUser} restaurantData={dados} navigation={navigation}/> */}
             </ScrollView>
             {/* <Divider width={1} /> */}
-            <BottomTabs />
+            <BottomTabs idUser={idUser} navigation={navigation}/>
         </SafeAreaView>
     )
 }

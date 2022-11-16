@@ -5,23 +5,19 @@ import LottieView from "lottie-react-native";
 import MenuItems from "../components/restaurantDetail/MenuItems";
 import firebase from '../firebase'
 
-export default function OrderCompleted(){
+export default function OrderCompleted({route}){
+    const database = firebase.firestore() 
+
+    const[list, setList] = useState([])
 
     const [lastOrder, setLastOrder] = useState({
-        items: [
-            {
-                title: "Lasagna",
-                description: "With butter lettuce, tomato and sauce bechamel",
-                price: "$13.50",
-                image:
-                  "https://images.themodernproper.com/billowy-turkey/production/posts/2019/Easy-italian-salad-recipe-10.jpg?w=1200&h=1200&q=82&fm=jpg&fit=crop&fp-x=0.5&fp-y=0.5&dm=1614096227&s=c0f63a30cef3334d97f9ecad14be51da",
-            },
-        ],
+        items: [],
     });
+
     const {items, restaurantName} = useSelector((state) => state.cartReducer.selectedItems);
 
     const total = items
-        .map((item) => Number(item.price.replace("$", "")))
+        .map((item) => Number(item.price.replace("R$", "")))
         .reduce((prev, curr) => prev + curr, 0);
 
     const totalUSD = total.toLocaleString("en", {
@@ -29,20 +25,32 @@ export default function OrderCompleted(){
         currency: "USD",
     });
 
+    // useEffect(() => {
+    //     database
+    //         .collection("Pedidos")
+    //         .doc("hybGrRxzZve7pIbtPz1gLEgfCj03")
+    //         .get()
+    //         .then((doc) => {
+    //         const list1 = [];
+    //         querySnapshot.forEach(doc => {
+    //           list1.push({ ...doc.data(), id: doc.id });
+    //         });
+    //         setLastOrder(doc.data());
+    //     });
+    // }, []);
+
     useEffect(() => {
-        const db = firebase.firestore();
-        const unsubscribe = db
-          .collection("orders")
-          .orderBy("createdAt", "desc")
-          .limit(1)
-          .onSnapshot((snapshot) => {
-            snapshot.docs.map((doc) => {
-              setLastOrder(doc.data());
-            });
-          });
-    
-        return () => unsubscribe();
-      }, []);
+        fetch(`https://food-apifepi.herokuapp.com/pedido/${route.params.idUser}`, {
+          method: 'GET',
+          headers: {
+            'Accept':'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(doc => {
+            setList(doc);
+        })
+      }, [])
 
     return (
         <SafeAreaView style={styles.AndroidSafeArea}>
@@ -52,24 +60,29 @@ export default function OrderCompleted(){
                 height: "100%"
             }}>
                 <LottieView
-                    style={{ height: 100, alignSelf: "center", marginBottom: 30 }}
+                    style={{ height: 100, alignSelf: "center", marginBottom: 15 }}
                     source={require('../assets/animations/check-mark.json')}
                     autoPlay
                     speed={0.5}
                     loop={false}       
                 />
-                <View>
-                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>Your order at {restaurantName} has been placed for ${totalUSD}</Text>
+                <View style={{width: "100%"}}>
+                    <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 40, textAlign: 'center' }}>Seu pedido no {restaurantName} foi finalizado por R${totalUSD}!</Text>
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <MenuItems foods={lastOrder.items} hideCheckBox={true} />
+                <View style={{height: 400}}>
+                {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+                    <MenuItems foods={list} hideCheckBox={true} />
+                {/* </ScrollView> */}
+                </View>
+                <View style={{position: "absolute", bottom: 45}}>
                     <LottieView
-                        style={{ height: 200, alignSelf: "center" }}
+                        style={{ height: 180, alignSelf: "center"}}
                         source={require('../assets/animations/cooking.json')}
                         autoPlay
-                        speed={0.5}      
+                        backgroundColor={'blacks'}
+                        speed={1}      
                     />
-                </ScrollView>
+              </View>
             </View>
         </SafeAreaView>
 

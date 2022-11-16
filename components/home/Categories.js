@@ -2,33 +2,33 @@ import React from "react";
 import { View, Text, Image, ScrollView } from "react-native";
 
 const items = [
-  {
-    image: require("../../assets/images/shopping-bag.png"),
-    text: "Pick-up",
-  },
+  // {
+  //   image: require("../../assets/images/shopping-bag.png"),
+  //   text: "Carrinho",
+  // },
   {
     image: require("../../assets/images/soft-drink.png"),
-    text: "Soft Drinks",
-  },
-  {
-    image: require("../../assets/images/bread.png"),
-    text: "Bakery Items",
+    text: "Bebidas",
   },
   {
     image: require("../../assets/images/fast-food.png"),
     text: "Fast Foods",
   },
-  {
-    image: require("../../assets/images/deals.png"),
-    text: "Deals",
-  },
+  // {
+  //   image: require("../../assets/images/bread.png"),
+  //   text: "Padaria",
+  // },
+  // {
+  //   image: require("../../assets/images/deals.png"),
+  //   text: "Feira",
+  // },
   {
     image: require("../../assets/images/coffee.png"),
-    text: "Coffee & Tea",
+    text: "Café & Chá",
   },
   {
     image: require("../../assets/images/desserts.png"),
-    text: "Desserts",
+    text: "Sobremesas",
   },
 ];
 
@@ -36,7 +36,7 @@ export default function Categories() {
   return (
     <View
       style={{
-        marginTop: 5,
+        marginTop: 10,
         backgroundColor: "#fff",
         paddingVertical: 10,
         paddingLeft: 20,
