@@ -12,7 +12,7 @@ export default function ViewCart({ navigation, idUser }) {
     const {items, restaurantName} = useSelector(
         (state) => state.cartReducer.selectedItems
     );
-
+    
     const total = items
         .map((item) => Number(item.price.replace("R$", "")))
         .reduce((prev, curr) => prev + curr, 0);
@@ -24,7 +24,32 @@ export default function ViewCart({ navigation, idUser }) {
 
       const addOrder = () => {
         setLoading(true);
-        items.map((item) => {
+            if (items[0] && !items[1]){
+            fetch('https://food-apifepi.herokuapp.com/pedido/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },  
+                body: JSON.stringify({
+                    subid: idUser,
+                    // valor: totalUSD,
+                    alltestes: [
+                        [
+                            items[0].title,
+                            items[0].price,
+                            items[0].description,
+                            items[0].image
+                        ],
+                    ]  
+                })
+            }).then(() => {
+                setTimeout(() => {
+                    setLoading(false);
+                    navigation.navigate("OrderCompleted", {idUser: idUser});
+                }, 1000);
+            });             
+            }else{
+                if(items[0] && items[1] && !items[2]){
                 fetch('https://food-apifepi.herokuapp.com/pedido/', {
                     method: 'POST',
                     headers: {
@@ -32,18 +57,161 @@ export default function ViewCart({ navigation, idUser }) {
                     },  
                     body: JSON.stringify({
                         subid: idUser,
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        image: item.image
+                        // valor: totalUSD,
+                        alltestes: [
+                            [
+                                items[0].title,
+                                items[0].price,
+                                items[0].description,
+                                items[0].image
+                            ],
+                            [
+                                items[1].title,
+                                items[1].price,
+                                items[1].description,
+                                items[1].image
+                            ],                 
+                        ]              
                     })
                 }).then(() => {
                     setTimeout(() => {
                         setLoading(false);
                         navigation.navigate("OrderCompleted", {idUser: idUser});
                     }, 1000);
-                });  
-            })      
+                }); 
+                }else{
+                    if(items[0] && items[1] && items[2] && !items[3]){
+                    fetch('https://food-apifepi.herokuapp.com/pedido/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':'application/json'
+                        },  
+                        body: JSON.stringify({
+                            subid: idUser,
+                            // valor: totalUSD,
+                            alltestes: [
+                                [
+                                    items[0].title,
+                                    items[0].price,
+                                    items[0].description,
+                                    items[0].image
+                                ],
+                                [
+                                    items[1].title,
+                                    items[1].price,
+                                    items[1].description,
+                                    items[1].image
+                                ],
+                                [
+                                    items[2].title,
+                                    items[2].price,
+                                    items[2].description,
+                                    items[2].image
+                                ],
+                            ]        
+                        })
+                    }).then(() => {
+                        setTimeout(() => {
+                            setLoading(false);
+                            navigation.navigate("OrderCompleted", {idUser: idUser});
+                        }, 1000);
+                    }); 
+                    }else{
+                        if(items[0] && items[1] && items[2] && items[3] && !items[4]){
+                        fetch('https://food-apifepi.herokuapp.com/pedido/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type':'application/json'
+                            },  
+                            body: JSON.stringify({
+                                subid: idUser,
+                                // valor: totalUSD,
+                                alltestes: [
+                                    [
+                                        items[0].title,
+                                        items[0].price,
+                                        items[0].description,
+                                        items[0].image
+                                    ],
+                                    [
+                                        items[1].title,
+                                        items[1].price,
+                                        items[1].description,
+                                        items[1].image
+                                    ],
+                                    [
+                                        items[2].title,
+                                        items[2].price,
+                                        items[2].description,
+                                        items[2].image
+                                    ],
+                                    [
+                                        items[3].title,
+                                        items[3].price,
+                                        items[3].description,
+                                        items[3].image
+                                    ],
+                                ]        
+                            })
+                        }).then(() => {
+                            setTimeout(() => {
+                                setLoading(false);
+                                navigation.navigate("OrderCompleted", {idUser: idUser});
+                            }, 1000);
+                        }); 
+                    }else{
+                        if(items[0] && items[1] && items[2] && items[3] && items[4] && !items[5]){
+                        fetch('https://food-apifepi.herokuapp.com/pedido/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type':'application/json'
+                            },  
+                            body: JSON.stringify({
+                                subid: idUser,
+                                // valor: totalUSD,
+                                alltestes: [
+                                    [
+                                        items[0].title,
+                                        items[0].price,
+                                        items[0].description,
+                                        items[0].image
+                                    ],
+                                    [
+                                        items[1].title,
+                                        items[1].price,
+                                        items[1].description,
+                                        items[1].image
+                                    ],
+                                    [
+                                        items[2].title,
+                                        items[2].price,
+                                        items[2].description,
+                                        items[2].image
+                                    ],
+                                    [
+                                        items[3].title,
+                                        items[3].price,
+                                        items[3].description,
+                                        items[3].image
+                                    ],
+                                    [
+                                        items[4].title,
+                                        items[4].price,
+                                        items[4].description,
+                                        items[4].image
+                                    ],
+                                    
+                                ]        
+                            })
+                        }).then(() => {
+                            setTimeout(() => {
+                                setLoading(false);
+                                navigation.navigate("OrderCompleted", {idUser: idUser});
+                            }, 1000);
+                        }); 
+                    }}}
+                }
+            }  
         };
 
     const addOrderToFireBase = () => {

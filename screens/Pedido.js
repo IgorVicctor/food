@@ -7,13 +7,13 @@ import { View, TextInput, TouchableOpacity, Text, Keyboard, Pressable, Alert, Sc
 import HeaderPedido from "../components/home/HeaderPedido";
 import BottomTabs from "../components/home/BottomTabs";
 
-export default function Conta({navigation, route}) {
+export default function Pedido({navigation, route}) {
 
     const [list, setList] = useState([]);
     const { idUser } = route.params;
 
     useEffect(() => {
-        fetch(`https://food-apifepi.herokuapp.com/pedido/${idUser}/`, {
+        fetch(`https://food-apifepi.herokuapp.com/pedido/${idUser}`, {
             method: 'GET',
             headers: {
             'Accept':'application/json'
@@ -21,6 +21,7 @@ export default function Conta({navigation, route}) {
         })
         .then(response => response.json())
         .then(data => {
+            // console.log(data)
             setList(data)
         })
     }, [])
@@ -31,11 +32,13 @@ export default function Conta({navigation, route}) {
         <View style={styles.AndroidSafeArea}>
 
         {list.map((food, index) => (
+            // console.log(food.alltestes[0][0])
         <View key={index}>
           <View style={styles.menuItemStyle}>
 
-              <FoodInfo food={food} />
-              <FoodImage food={food} />
+              <FoodInfo food={food.alltestes} />
+              <FoodImage food={food.alltestes} />
+              <Text>{food.valor}</Text>
           </View>
           <View
                 style={{
@@ -83,16 +86,16 @@ export default function Conta({navigation, route}) {
 
 const FoodInfo = (props) => (
     <View style={{ width: 240, justifyContent: "space-evenly"}}>
-        <Text style={styles.titleStyle}>{props.food.title}</Text>
-        <Text style={{fontSize: 14}}>{props.food.description}</Text>
-        <Text style={{fontSize: 13}}>Valor: {props.food.price}</Text>
+        <Text style={styles.titleStyle}>{props.food[0][0]}</Text>
+        <Text style={{fontSize: 14}}>{props.food[0][2]}</Text>
+        <Text style={{fontSize: 13}}>Valor: {props.food[0][1]}</Text>
     </View>
 )
 
 const FoodImage = ({ marginLeft, ...props }) => (
   <View>
     <Image
-      source={{ uri: props.food.image }}
+      source={{ uri: props.food[0][3] }}
       style={{ 
         width: 65,
         height: 65,

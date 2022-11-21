@@ -40,17 +40,8 @@ export default function OrderCompleted({route}){
     // }, []);
 
     useEffect(() => {
-        fetch(`https://food-apifepi.herokuapp.com/pedido/${route.params.idUser}`, {
-          method: 'GET',
-          headers: {
-            'Accept':'application/json'
-          }
-        })
-        .then(response => response.json())
-        .then(doc => {
-            setList(doc);
-        })
-      }, [])
+        setList(items)
+    }, [])
 
     return (
         <SafeAreaView style={styles.AndroidSafeArea}>

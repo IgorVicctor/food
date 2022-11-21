@@ -29,7 +29,7 @@ export default function Login ({ navigation }) {
         list.map((item) => {
             if(email == item.email){
                 if(password == item.senha){
-                    navigation.navigate("Home", { idUser: item.id });
+                    navigation.navigate("Home", {idUser: item.id});
                 }
             }else{
                 setErrorLogin(true)
@@ -131,7 +131,8 @@ export default function Login ({ navigation }) {
 
                     <TouchableOpacity
                     style={Container.button}
-                    onPress={verificaLogin}   
+                    onPress={verificaLogin}
+                    idUser={1}   
                     // onPress={loginFirebase}   
                     >
                         <Text style={Container.buttonText}>Acessar</Text>
