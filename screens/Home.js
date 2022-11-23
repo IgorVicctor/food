@@ -12,7 +12,8 @@ import firebase from "../firebase"
 
 export default function Home({ navigation, route }) {
 
-    const database = firebase.firestore()  
+    const database = firebase.firestore() 
+   
 
     const[list, setList] = useState([])
     const[dados, setDados] = useState([])
@@ -33,26 +34,26 @@ export default function Home({ navigation, route }) {
         })
       }, [])
 
-      useEffect(() => {
-        const backAction = () => {
-          Alert.alert("Espere!", "Você tem certeza que quer sair?", [
-            {
-              text: "Cancelar",
-              onPress: () => null,
-              style: "cancel"
-            },
-            { text: "Sim", onPress: () => navigation.goBack() }
-          ]);
-          return true;
-        };
+      // useEffect(() => {
+      //   const backAction = () => {
+      //     Alert.alert("Espere!", "Você tem certeza que quer sair?", [
+      //       {
+      //         text: "Cancelar",
+      //         onPress: () => null,
+      //         style: "cancel"
+      //       },
+      //       { text: "Sim", onPress: () => navigation.goBack() }
+      //     ]);
+      //     return true;
+      //   };
     
-        const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
-        );
+      //   const backHandler = BackHandler.addEventListener(
+      //     "hardwareBackPress",
+      //     backAction
+      //   );
     
-        return () => backHandler.remove();
-      }, []);
+      //   return () => backHandler.remove();
+      // }, []);
 
       // useEffect(() => {
       //   database.collection("Restaurantes").onSnapshot((query) => {
@@ -67,6 +68,7 @@ export default function Home({ navigation, route }) {
 
     return (
         <SafeAreaView style={styles.AndroidSafeArea}>
+
             <View style={{backgroundColor: "white", padding: 15}}>
                 {/* <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab}/> */}
                 {/* <SearchBar cityHandler={setCity}/> */}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
 import firebase from "../../firebase";
@@ -32,8 +32,8 @@ export default function ViewCart({ navigation, idUser }) {
                 },  
                 body: JSON.stringify({
                     subid: idUser,
-                    // valor: totalUSD,
-                    alltestes: [
+                    valor: totalUSD,
+                    itens: [
                         [
                             items[0].title,
                             items[0].price,
@@ -57,8 +57,8 @@ export default function ViewCart({ navigation, idUser }) {
                     },  
                     body: JSON.stringify({
                         subid: idUser,
-                        // valor: totalUSD,
-                        alltestes: [
+                        valor: totalUSD,
+                        itens: [
                             [
                                 items[0].title,
                                 items[0].price,
@@ -88,8 +88,8 @@ export default function ViewCart({ navigation, idUser }) {
                         },  
                         body: JSON.stringify({
                             subid: idUser,
-                            // valor: totalUSD,
-                            alltestes: [
+                            valor: totalUSD,
+                            itens: [
                                 [
                                     items[0].title,
                                     items[0].price,
@@ -125,8 +125,8 @@ export default function ViewCart({ navigation, idUser }) {
                             },  
                             body: JSON.stringify({
                                 subid: idUser,
-                                // valor: totalUSD,
-                                alltestes: [
+                                valor: totalUSD,
+                                itens: [
                                     [
                                         items[0].title,
                                         items[0].price,
@@ -168,8 +168,8 @@ export default function ViewCart({ navigation, idUser }) {
                             },  
                             body: JSON.stringify({
                                 subid: idUser,
-                                // valor: totalUSD,
-                                alltestes: [
+                                valor: totalUSD,
+                                itens: [
                                     [
                                         items[0].title,
                                         items[0].price,
@@ -236,13 +236,16 @@ export default function ViewCart({ navigation, idUser }) {
             <View style={styles.modalContainer}>
                 <View style={styles.modalCheckoutContainer}>
                     <Text style={styles.restaurantName}>{restaurantName}</Text>
-                    {items.map((item, index) => (
-                        <OrderItem key={index} item={item} />
-                    ))}
-                    <View style={styles.subTotalContainer}>
-                        <Text style={styles.subTotalText}>Total</Text>
-                        <Text>R${totalUSD}</Text>
-                    </View>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        {items.map((item, index) => (
+                            <OrderItem key={index} item={item} />
+                        ))}
+                        <View style={styles.subTotalContainer}>
+                            <Text style={styles.subTotalText}>Total</Text>
+                            <Text style={{fontSize: 16}}>R$ {totalUSD}</Text>
+                        </View>
+                    </ScrollView>
+
                     <View style={{ flexDirection: "row", justifyContent: "center" }}>
                         <TouchableOpacity style={{
                             marginTop: 20,
@@ -296,7 +299,7 @@ export default function ViewCart({ navigation, idUser }) {
                     justifyContent: "center",
                     flexDirection: "row",
                     position: "absolute",
-                    bottom: 60,
+                    bottom: 100,
                     zIndex: 999,
                 }}
             >
@@ -362,7 +365,7 @@ const styles = StyleSheet.create({
     modalCheckoutContainer: {
         backgroundColor: "white",
         padding: 16,
-        height: 450,
+        height: 465,
         borderWitdh: 1
     },
 
@@ -382,7 +385,7 @@ const styles = StyleSheet.create({
     subTotalText: {
         textAlign: "left",
         fontWeight: "600",
-        fontSize: 15,
+        fontSize: 18,
         marginBottom: 10
     },
 })

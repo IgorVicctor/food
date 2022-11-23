@@ -11,6 +11,7 @@ import Conta from './screens/Conta';
 import Pedido from './screens/Pedido';
 import Login from './screens/Login';
 import Cadastro from './screens/Cadastro';
+import Preload from './screens/Preload';
 import StackRoutes from './main/MainStack';
 
 
@@ -28,7 +29,8 @@ export default function RootNavigation() {
         <ReduxProvider store={store}>
             <NavigationContainer>
                 {/* <StackRoutes /> */}
-                <Stack.Navigator initialRouteName="Login" screenOptions={screenOptions}>
+                <Stack.Navigator initialRouteName="Preload" screenOptions={screenOptions}>
+                    <Stack.Screen name="Preload" component={Preload}/>
                     <Stack.Screen name="Cadastro" component={Cadastro} />
                     <Stack.Screen name="Login" component={Login}/>
                     <Stack.Screen name="Pedido" component={Pedido} />

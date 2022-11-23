@@ -54,8 +54,10 @@ export default function Carrinho({ navigation, route }) {
                 },  
                 body: JSON.stringify({
                     subid: idUser,
+                    nome: restaurantName,
                     valor: totalUSD,
-                    alltestes: [
+                    data: "10/11/2022",
+                    itens: [
                         [
                             items[0].title,
                             items[0].price,
@@ -79,8 +81,10 @@ export default function Carrinho({ navigation, route }) {
                     },  
                     body: JSON.stringify({
                         subid: idUser,
+                        nome: restaurantName,
                         valor: totalUSD,
-                        alltestes: [
+                        data: "10/11/2022",
+                        itens: [
                             [
                                 items[0].title,
                                 items[0].price,
@@ -110,8 +114,10 @@ export default function Carrinho({ navigation, route }) {
                         },  
                         body: JSON.stringify({
                             subid: idUser,
+                            nome: restaurantName,
                             valor: totalUSD,
-                            alltestes: [
+                            data: "10/11/2022",
+                            itens: [
                                 [
                                     items[0].title,
                                     items[0].price,
@@ -147,8 +153,10 @@ export default function Carrinho({ navigation, route }) {
                             },  
                             body: JSON.stringify({
                                 subid: idUser,
+                                nome: restaurantName,
                                 valor: totalUSD,
-                                alltestes: [
+                                data: "10/11/2022",
+                                itens: [
                                     [
                                         items[0].title,
                                         items[0].price,
@@ -190,8 +198,9 @@ export default function Carrinho({ navigation, route }) {
                             },  
                             body: JSON.stringify({
                                 subid: idUser,
+                                nome: restaurantName,
                                 valor: totalUSD,
-                                alltestes: [
+                                itens: [
                                     [
                                         items[0].title,
                                         items[0].price,
